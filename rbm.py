@@ -87,18 +87,6 @@ class RestrictedBoltzmannMachine():
 
             # [TODO TASK 4.1] update the parameters using function 'update_params'
             
-            # Get a random mini-batch of samples from the visible_trainset
-            indices = np.random.randint(0, n_samples, self.batch_size)
-            v_0 = visible_trainset[indices]
-
-            # Perform one step of Gibbs sampling: v_0 -> h_0 -> v_1 -> h_1
-            p_h_given_v_0, h_0 = self.get_h_given_v(v_0)
-            p_v_given_h_0, v_1 = self.get_v_given_h(h_0)
-            p_h_given_v_1, h_1 = self.get_h_given_v(v_1)
-
-            # Update the parameters
-            self.update_params(v_0, p_h_given_v_0, v_1, p_h_given_v_1)
-
             # visualize once in a while when visible layer is input images
             
             if it % self.rf["period"] == 0 and self.is_bottom:
@@ -129,10 +117,6 @@ class RestrictedBoltzmannMachine():
         """
 
         # [TODO TASK 4.1] get the gradients from the arguments (replace the 0s below) and update the weight and bias parameters
-        # Computing the deltas using momentum
-        self.delta_bias_v = self.momentum * self.delta_bias_v + self.learning_rate * np.mean(v_0 - v_k, axis=0)
-        self.delta_weight_vh = self.momentum * self.delta_weight_vh + self.learning_rate * (np.dot(v_0.T, h_0) - np.dot(v_k.T, h_k)) / self.batch_size
-        self.delta_bias_h = self.momentum * self.delta_bias_h + self.learning_rate * np.mean(h_0 - h_k, axis=0)
         
         self.delta_bias_v += 0
         self.delta_weight_vh += 0
